@@ -34,30 +34,27 @@ filesName = os.listdir("fixed")
 
 #循环输出PO号和金额
 i = 0
+
 while i < len(filesName):
     fileFullName = "fixed\\" + filesName[i]
     #提取pdf文字
+    text = ""
     with pdfplumber.open(fileFullName) as pdf:
-        firstPage = pdf.pages[0]                    #指定页码
-        firstPageText = firstPage.extract_text()    #提取文本
+        for page in pdf.pages:
+            text = text + page.extract_text()
 
         #分离PO_Number
-        poNum = firstPageText[firstPageText.find("PO Number : ") + 12 : firstPageText.find('PO Number : ') + 22]       #默认PO Number 为十位数字
-        #print(poNum)
-
-        #分离 TWENTY-TWO AND SEVENTY-SIX CENT ONLY 
-        endPage = pdf.pages[-1]                     #指定页码
-        endPageText = endPage.extract_text()        #提取文本
+        poNum = text[text.find("PO Number : ") + 12 : text.find('PO Number : ') + 22]       #默认PO Number 为十位数字
 
         #计算总价开始位置
-        totalAmountStart = endPageText.find("ENT ONLY ") + 9
+        totalAmountStart = text.find("ENT ONLY ") + 9
 
         #计算总价结束位置
-        totalAmountEnd = endPageText.find("Should the Sales Tax/Service")
+        totalAmountEnd = text.find("Should the Sales Tax/Service")
 
 
         #分离总价
-        totalAmount = endPageText[totalAmountStart : totalAmountEnd]
+        totalAmount = text[totalAmountStart : totalAmountEnd]
         
     #显示结果
     print(fileFullName, "    ", poNum, "    ", totalAmount)

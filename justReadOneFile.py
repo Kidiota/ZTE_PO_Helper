@@ -1,3 +1,31 @@
+# 提取pdf文字
+import pdfplumber
+text = ""
+with pdfplumber.open("fixed\\fixed_16.pdf") as pdf:
+    for page in pdf.pages:
+        text = text + page.extract_text()
+    
+#分离PO_Number
+    poNum = text[text.find("PO Number : ") + 12 : text.find('PO Number : ') + 22]       #默认PO Number 为十位数字
+ 
+    #计算总价开始位置
+    totalAmountStart = text.find("ENT ONLY ") + 9
+
+    #计算总价结束位置
+    totalAmountEnd = text.find("Should the Sales Tax/Service")
+
+
+    #分离总价
+    totalAmount = text[totalAmountStart : totalAmountEnd]
+
+    subrate = text.find("SUBRATE")
+    #显示结果
+    print(poNum, "    ", totalAmount, "    ", subrate,)
+
+
+    
+
+
 import pdfplumber
 import PyPDF2
 import os
@@ -63,7 +91,3 @@ while i < len(filesName):
     print(fileFullName, "    ", poNum, "    ", totalAmount)
     i = i + 1
 
-
-
-
-    
