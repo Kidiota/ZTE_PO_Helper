@@ -61,9 +61,6 @@ def get_defult_info():
 
 
 
-
-
-
 #读取input文件夹内文件的文件名
 folder_path = "input"
 filesName = os.listdir(folder_path)             #以列表方式记录所有文件名
