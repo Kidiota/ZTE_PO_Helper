@@ -1,7 +1,7 @@
-'''
 import pdfplumber
 import PyPDF2
 import os
+import shutil
 
 #修复CropBox问题
 def fix_cropbox(pdf_path, output_path):
@@ -17,6 +17,9 @@ def fix_cropbox(pdf_path, output_path):
 
     with open(output_path, "wb") as output_file:
         writer.write(output_file)
+
+
+os.mkdir('fixed')
 
 #读取input文件夹内文件的文件名
 folder_path = "input"
@@ -35,6 +38,15 @@ filesName = os.listdir("fixed")
 
 #循环输出PO号和金额
 i = 0
+text = ""
+with pdfplumber.open("fixed\\fixed_01.pdf") as pdf:
+    for page in pdf.pages:
+        text = text + page.extract_text()
+    print(text)
+
+shutil.rmtree('fixed')
+
+'''
 while i < len(filesName):
     fileFullName = "fixed\\" + filesName[i]
     #提取pdf文字
@@ -65,11 +77,4 @@ while i < len(filesName):
     i = i + 1
 
 
-
-
-    '''
-
-a = []
-a = a + [[1,2,3],[4,5,6]]
-a = a + [[7,8,9]]
-print(a[1][1])
+'''

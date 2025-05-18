@@ -1,6 +1,7 @@
 import pdfplumber
 import PyPDF2
 import os
+import shutil
 
 #修复CropBox问题
 def fix_cropbox(pdf_path, output_path):
@@ -39,26 +40,34 @@ def get_defult_info():
             #计算总价结束位置
             totalAmountEnd = text.find("\nShould the Sales Tax/Service")
 
-            #判断SUBRATE是否存在
-            subrate = text.find("SUBRATE")
+            #判断SUBRACK是否存在
+            subrack = text.find("SUBRACK")
             
-            if subrate >= 0:
-                subrate = "Has SUBRATE"
+            if subrack >= 0:
+                subrack = "Has SUBRACK"
+                #分离SUBRACK数量
+                sub_num_start = text.find("SUBRACK") + 19
+                sub_num_end = text.find("SUBRACK") + 21
+                sub_num = text[sub_num_start : sub_num_end]
+                #分离SUBRACK型号
+                sub_type_start = text.find("SUBRACK") - 5
+                sub_type_end = text.find("SUBRACK") -1
+                sub_type = text[sub_type_start : sub_type_end]
             else:
-                subrate = "Don't has SUBRATE"
+                subrack = "Don't has SUBRACK"
+                sub_num = "--"
+                sub_type = "--"
+                
+            
             
             #分离总价
             totalAmount = text[totalAmountStart : totalAmountEnd]
         
-        outputInfo += [[fixedFileFullName, poNum, totalAmount, subrate]]
-
-        #显示结果
-        #print(outputInfo[i])
-        #print(fixedFileFullName, "    ", poNum, "    ", totalAmount)
+        outputInfo += [[fixedFileFullName, poNum, totalAmount, subrack, sub_num, sub_type]]
         i = i + 1
     return outputInfo
 
-
+os.mkdir('fixed')
 
 
 #读取input文件夹内文件的文件名
@@ -84,4 +93,6 @@ outputInfo = get_defult_info()
 i = 0
 while i < outputInfo[0]:
     i = i + 1
-    print("文件名：", outputInfo[i][0], "    PO号：", outputInfo[i][1], "    项目总价：", outputInfo[i][2], "    ", outputInfo[i][3])
+    print("文件名：", outputInfo[i][0], "    PO号：", outputInfo[i][1], "    项目总价：", outputInfo[i][2], "    ", outputInfo[i][3], "    SUBRACK数量：", outputInfo[i][4], "    SUBRACK型号", outputInfo[i][5])
+    
+shutil.rmtree('fixed')
