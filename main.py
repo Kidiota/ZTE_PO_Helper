@@ -34,11 +34,10 @@ def get_defult_info():
             #分离PO_Number
             poNum = text[text.find("PO Number : ") + 12 : text.find('PO Number : ') + 22]       #默认PO Number 为十位数字
 
-            #计算总价开始位置
+            #计算总价
             totalAmountStart = text.find(" ONLY ") + 6
-
-            #计算总价结束位置
             totalAmountEnd = text.find("\nShould the Sales Tax/Service")
+            totalAmount = text[totalAmountStart : totalAmountEnd]
 
             #判断SUBRACK是否存在
             subrack = text.find("SUBRACK")
@@ -59,9 +58,8 @@ def get_defult_info():
                 sub_type = "-"
                 
             
-            
-            #分离总价
-            totalAmount = text[totalAmountStart : totalAmountEnd]
+            if len(totalAmount) >= 10:
+                totalAmount = "数据异常"
         outputInfo += [[fixedFileFullName[12 : -4], poNum, totalAmount, subrack, sub_num, sub_type]]
         print('\r' + '已提取' + str(i) + '/' + str(len(filesName)), end='', flush=True)
         i = i + 1
@@ -72,6 +70,7 @@ os.mkdir('fixed')
 
 
 #读取input文件夹内文件的文件名
+print("正在读取input文件夹")
 folder_path = "input"
 filesName = os.listdir(folder_path)             #以列表方式记录所有文件名
 
@@ -98,3 +97,5 @@ while i < outputInfo[0]:
     print("文件名：", outputInfo[i][0], "    PO号：", outputInfo[i][1], "    项目总价：", outputInfo[i][2], "    ", outputInfo[i][3], "    SUBRACK数量：", outputInfo[i][4], "    SUBRACK型号", outputInfo[i][5])
     
 shutil.rmtree('fixed')
+print("\n按任意键退出")
+os.system('pause')
