@@ -35,7 +35,7 @@ def get_defult_info():
             poNum = text[text.find("PO Number : ") + 12 : text.find('PO Number : ') + 22]       #默认PO Number 为十位数字
 
             #计算总价开始位置
-            totalAmountStart = text.find("ENT ONLY ") + 9
+            totalAmountStart = text.find(" ONLY ") + 6
 
             #计算总价结束位置
             totalAmountEnd = text.find("\nShould the Sales Tax/Service")
@@ -44,10 +44,10 @@ def get_defult_info():
             subrack = text.find("SUBRACK")
             
             if subrack >= 0:
-                subrack = "Has SUBRACK"
+                subrack = "Has SUBRACK      "
                 #分离SUBRACK数量
                 sub_num_start = text.find("SUBRACK") + 19
-                sub_num_end = text.find("SUBRACK") + 21
+                sub_num_end = text.find("SUBRACK") + 20
                 sub_num = text[sub_num_start : sub_num_end]
                 #分离SUBRACK型号
                 sub_type_start = text.find("SUBRACK") - 5
@@ -55,16 +55,17 @@ def get_defult_info():
                 sub_type = text[sub_type_start : sub_type_end]
             else:
                 subrack = "Don't has SUBRACK"
-                sub_num = "--"
-                sub_type = "--"
+                sub_num = "-"
+                sub_type = "-"
                 
             
             
             #分离总价
             totalAmount = text[totalAmountStart : totalAmountEnd]
-        
-        outputInfo += [[fixedFileFullName, poNum, totalAmount, subrack, sub_num, sub_type]]
+        outputInfo += [[fixedFileFullName[12 : -4], poNum, totalAmount, subrack, sub_num, sub_type]]
+        print('\r' + '已提取' + str(i) + '/' + str(len(filesName)), end='', flush=True)
         i = i + 1
+    print('\n提取完毕')
     return outputInfo
 
 os.mkdir('fixed')
@@ -84,7 +85,8 @@ while i < len(filesName):
     fixedFileName = "fixed\\fixed_" + filesName[i]
     fix_cropbox(fileFullName, fixedFileName)
     i = i + 1
-
+    print('\r' + '预处理文件' + str(i) + '/' + str(len(filesName)), end='', flush=True)
+print('\n处理完毕，开始提取数据')
 
 
 filesName = os.listdir("fixed")
