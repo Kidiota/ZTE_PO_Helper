@@ -5,7 +5,7 @@ import shutil
 
 #修复CropBox问题
 def fix_cropbox(pdf_path, output_path):
-    #"""修复PDF文件的CropBox问题，并生成新的PDF文件."""
+    #修复PDF文件的CropBox问题，并生成新的PDF文件.
     with open(pdf_path, "rb") as file:
         reader = PyPDF2.PdfReader(file)
         writer = PyPDF2.PdfWriter()
@@ -18,16 +18,14 @@ def fix_cropbox(pdf_path, output_path):
     with open(output_path, "wb") as output_file:
         writer.write(output_file)
 
-#循环输出PO号和金额
+#获取原始数据
 def get_raw_info():
     i = 0
-    #创建总输出数组
-
     rawInfo = []
     outputInfo = [len(filesName)]
     while i < len(filesName):
         fixedFileFullName = "fixed\\" + filesName[i]
-        print(fixedFileFullName,len(filesName),"\n\n")
+        print(fixedFileFullName,i,"/",len(filesName),"\n\n")
         with pdfplumber.open(fixedFileFullName) as pdf:
             oneRawInfo = []
             table_settings = {
@@ -58,6 +56,36 @@ def get_raw_info():
         i = i + 1
     return(rawInfo)
 
+def Preprocessing_Data(rawData):
+    infoInLine = []
+    Processed_Data = []
+    i = 0
+    #下面这个循环一次读取一个PDF文件的信息
+    while i < len(rawData):
+        one_PDF_data = rawData[i]
+        #处理简单的信息
+        PO_No = one_PDF_data[0][0][12:]
+        PO_Date = one_PDF_data[1][0][10:]
+        Contract_No = one_PDF_data[2][0][15:]
+        Payment_Terms = one_PDF_data[3][0][16:]
+        Project_Cost_Center = one_PDF_data[5][0][22:] + " " + one_PDF_data[6][0]
+        Tracking_No = one_PDF_data[7][0][14:]
+
+        #关键信息提取
+        Form_Data = [] # 0: Service No  1: Description  2: Delivery Date  3: Order Qty  4: UoM  5: Unit Price  6: Total Price
+
+
+
+        infoInLine = [PO_No, PO_Date, Contract_No, Payment_Terms, Project_Cost_Center, Tracking_No] 
+        Processed_Data += [infoInLine]
+        i = i + 1
+
+    i = 0
+    while i < len(Processed_Data):
+        print(Processed_Data[i])
+        i = i + 1
+
+        
                 
         
 
@@ -75,19 +103,24 @@ while i < len(filesName):
     fix_cropbox(fileFullName, fixedFileName)
     i = i + 1
 
-
 filesName = os.listdir("fixed")
 
-#读取表格
+
+#上面那一坨就是从文件读取数据到内存，能运行，不需要知道怎么运行的，别碰就行了
+
+
+
+
+
+
 
 raw_data = get_raw_info()
 
-print(len(raw_data[0]))
+Preprocessing_Data(raw_data)
 
-i = 0
-while i < len(raw_data[0]):
-    print(i, " ", raw_data[0][i])
-    i = i + 1
+
+
+
 
 
 
