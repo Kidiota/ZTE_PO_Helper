@@ -25,9 +25,9 @@ def get_raw_info():
     i = 0
     rawInfo = []
     outputInfo = [len(filesName)]
+    print("开始提取数据")
     while i < len(filesName):
         fixedFileFullName = "fixed\\" + filesName[i]
-        print(fixedFileFullName,i,"/",len(filesName),"\n\n")
         with pdfplumber.open(fixedFileFullName) as pdf:
             oneRawInfo = []
             table_settings = {
@@ -35,7 +35,6 @@ def get_raw_info():
                 "horizontal_strategy": "text",
                 }
             for page in pdf.pages:
-                print(page)
                 tables = page.extract_tables(table_settings)
                 for table in tables:
                     for row in table:
@@ -56,9 +55,12 @@ def get_raw_info():
                                                                         oneRawInfo += infoInLine
         rawInfo += [oneRawInfo]
         i = i + 1
+        print('\r' + '已提取' + str(i) + '/' + str(len(filesName)), end='', flush=True)
+    print('\n提取完毕')
     return(rawInfo)
 
 def Preprocessing_Data(rawData):
+    print("开始处理数据")
     infoInLine = []
     Processed_Data = []
     i = 0
@@ -103,17 +105,14 @@ def Preprocessing_Data(rawData):
 
 
         while POSN < len(one_PDF_data):
-            print("\n", POSN, "/", len(one_PDF_data), " ", PO_No)
             
             if len(one_PDF_data[POSN]) > 1:
                 #不是最后一页，表格不封闭情况下找PO号
                 if one_PDF_data[POSN][0][:3] == '000':
                     Service_No += [one_PDF_data[POSN][0]]   #找PO号
-                    print(Service_No)
                     
                     #找描述
-                    pod = one_PDF_data[POSN][1]
-                    print(pod)    
+                    pod = one_PDF_data[POSN][1]   
                     a = 1
                     
                     """
@@ -128,12 +127,10 @@ def Preprocessing_Data(rawData):
                             if one_PDF_data[POSN + a][1] != 'Non-SST Registered Supplier Purchases 0%':
                                 if one_PDF_data[POSN + a][1] != '':
                                     pod += one_PDF_data[POSN + a][1]
-                                    print(pod)
                         a = a + 1
 
 
                     Description += [pod]
-                    print(Description)
 
                     #找Delivery Date
                     Delivery_Date += [one_PDF_data[POSN][2]]
@@ -161,16 +158,13 @@ def Preprocessing_Data(rawData):
                         Service_No += [one_PDF_data[POSN][1]]
 
                         #找描述
-                        pod = one_PDF_data[POSN][2]
-                        print(pod)    
+                        pod = one_PDF_data[POSN][2]   
                         a = 1
                         while one_PDF_data[POSN + a][2] != '' and one_PDF_data[POSN + a][2] != 'Non-SST Registered Supplier Purchases 0%':
                             p = ' ' + one_PDF_data[POSN + a][2]
                             pod += p
-                            print(pod)
                             a = a + 1
                         Description += [pod]
-                        print(Description)
 
                         #找Delivery Date
                         Delivery_Date += [one_PDF_data[POSN][3]]
@@ -196,19 +190,8 @@ def Preprocessing_Data(rawData):
         Processed_Data += [infoInLine]
         i = i + 1
 
-    i = 0
-    while i < len(Processed_Data):
-        print(Processed_Data[i])
-        print(len(Processed_Data[i][6][0]))
-        print(len(Processed_Data[i][6][1]))
-        print(len(Processed_Data[i][6][2]))
-        print(len(Processed_Data[i][6][3]))
-        print(len(Processed_Data[i][6][4]))
-        print(len(Processed_Data[i][6][5]))
-        print(len(Processed_Data[i][6][6]))
-        i = i + 1
-    print(Processed_Data)
-
+        print('\r' + '已处理' + str(i) + '/' + str(len(filesName)), end='', flush=True)
+    print('\n处理完毕')
     return(Processed_Data)
 
 
@@ -219,6 +202,7 @@ def Preprocessing_Data(rawData):
 os.mkdir('fixed')
 
 #读取input文件夹内文件的文件名
+print("正在读取input文件夹")
 folder_path = "input"
 filesName = os.listdir(folder_path)             #以列表方式记录所有文件名
 
@@ -229,6 +213,8 @@ while i < len(filesName):
     fixedFileName = "fixed\\fixed_" + filesName[i]
     fix_cropbox(fileFullName, fixedFileName)
     i = i + 1
+    print('\r' + '预处理文件' + str(i) + '/' + str(len(filesName)), end='', flush=True)
+print('\n处理完毕，开始提取数据')
 
 filesName = os.listdir("fixed")
 
@@ -243,7 +229,6 @@ raw_data = get_raw_info()
 
 all_data = Preprocessing_Data(raw_data)
 
-print(all_data)
 
 shutil.rmtree('fixed')
 
@@ -251,7 +236,7 @@ shutil.rmtree('fixed')
 print("开始生成.xlsx文件")
 #用当前时间做文件名
 xlsxName = time.strftime('%Y%m%d%H%M%S', time.localtime()) + ".xlsx"
-print(xlsxName)
+
 #生成空文件
 workbook = xlsxwriter.Workbook(xlsxName)
 #生成空工作表
@@ -310,9 +295,10 @@ while a < len(all_data):
 
 
 
-    print('\r' + '正在写入数据' + str(a) + '/' + str(len(filesName)), end='', flush=True)
+    print('\r' + '正在写入数据' + str(a + 1) + '/' + str(len(filesName)), end='', flush=True)
     i = i + 1
     a = a + 1
 
+print('输出文件: ', xlsxName)
 
 workbook.close()
