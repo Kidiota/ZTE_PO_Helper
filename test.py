@@ -26,7 +26,7 @@ def get_raw_info():
     rawInfo = []
     outputInfo = [len(filesName)]
     while i < len(filesName):
-        fixedFileFullName = "fixed\\" + "fixed_4902261163 NGN DWDM EQ.pdf"#filesName[i]
+        fixedFileFullName = "fixed\\" + "fixed_4902261116 NGN DWDM EQ.pdf"#filesName[i]
         print(fixedFileFullName,len(filesName), i, "\n\n")
         with pdfplumber.open(fixedFileFullName) as pdf:
             oneRawInfo = []

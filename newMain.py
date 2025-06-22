@@ -77,7 +77,11 @@ def Preprocessing_Data(rawData):
             PO_Date = one_PDF_data[1][1][10:]
             Contract_No = one_PDF_data[2][1][15:]
             Payment_Terms = one_PDF_data[3][1][16:]
-            Project_Cost_Center = one_PDF_data[5][1][22:] + " " + one_PDF_data[6][0]
+            Project_Cost_Center = one_PDF_data[5][1][22:] + " "
+            if one_PDF_data[6][0] == 'MALAYSIA':
+                Project_Cost_Center = one_PDF_data[5][1][22:] + " " + one_PDF_data[6][1]
+            else:
+                Project_Cost_Center = one_PDF_data[5][1][22:] + " " + one_PDF_data[6][0]
             Tracking_No = one_PDF_data[7][1][14:]
         else:
             POSN = one_PDF_data.index(['Service No', '', 'Date', 'Qty', '', '', ''])
@@ -85,7 +89,11 @@ def Preprocessing_Data(rawData):
             PO_Date = one_PDF_data[1][0][10:]
             Contract_No = one_PDF_data[2][0][15:]
             Payment_Terms = one_PDF_data[3][0][16:]
-            Project_Cost_Center = one_PDF_data[5][0][22:] + " " + one_PDF_data[6][0]
+            Project_Cost_Center = one_PDF_data[5][0][22:] + " "
+            if one_PDF_data[6][0] == 'MALAYSIA':
+                Project_Cost_Center = one_PDF_data[5][0][22:] + " " + one_PDF_data[6][1]
+            else:
+                Project_Cost_Center = one_PDF_data[5][0][22:] + " " + one_PDF_data[6][0]
             Tracking_No = one_PDF_data[7][0][14:]
         
         Service_No = []
