@@ -26,7 +26,7 @@ def get_raw_info():
     rawInfo = []
     outputInfo = [len(filesName)]
     while i < len(filesName):
-        fixedFileFullName = "fixed\\" + "fixed_4902261116 NGN DWDM EQ.pdf"#filesName[i]
+        fixedFileFullName = "fixed\\" + "fixed_TUV-ROADM-EXP01_TM_DWDM_PO4902261818_FCOA_2025-01-21.pdf"#filesName[i]
         print(fixedFileFullName,len(filesName), i, "\n\n")
         with pdfplumber.open(fixedFileFullName) as pdf:
             oneRawInfo = []
@@ -36,7 +36,7 @@ def get_raw_info():
                 }
             for page in pdf.pages:
                 print(page)
-                tables = page.extract_tables(table_settings)
+                tables = page.extract_text()
                 for table in tables:
                     for row in table:
                         if row != ['', '', '', '', '', '', '', '', '', '', '', '']:
