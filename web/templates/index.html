@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PO解析与导出工具</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+<header>
+    <div class="org-badge">马来西亚工程服务处数字化团队</div>
+    <button id="langToggle" class="lang-toggle">EN</button>
+    <h1><i class="fas fa-file-pdf"></i> <span data-i18n="title">PO 解析与导出工具</span></h1>
+    <p class="subtitle" data-i18n="subtitle">上传多个 PO PDF，等待处理完成后下载结果</p>
+</header>
+<div class="main-content">
+    <div class="upload-area" id="pdfUploadArea">
+        <i class="fas fa-file-upload"></i>
+        <p data-i18n="uploadPDF">点击或拖拽上传 PDF 文件（可多选）</p>
+        <input type="file" id="pdfInput" accept="application/pdf" multiple style="display:none;">
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <div style="text-align:center;">
+        <button id="startBtn" class="action-btn" disabled data-i18n="start">开始处理</button>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="status-text" id="statusText" data-i18n="wait">等待开始</div>
+    <div id="resultArea" style="text-align:center; margin-top:12px; display:none;">
+        <a id="downloadLink" class="download-btn" href="#" target="_blank" data-i18n="download">下载结果</a>
+    </div>
+</div>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
