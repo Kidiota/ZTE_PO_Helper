@@ -1,0 +1,92 @@
+
+/* 基础风格，延续现有页面的渐变与卡片设计 */
+:root{
+  --grad-a: #6a11cb;
+  --grad-b: #2575fc;
+  --header-a: #4b6cb7;
+  --header-b: #182848;
+}
+*{ box-sizing:border-box; }
+body{
+  background: linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 100%);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  font-family:'Segoe UI', Tahoma, sans-serif;
+}
+.container{
+  width:100%;
+  max-width:1000px;
+  background:rgba(255,255,255,0.95);
+  border-radius:20px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.2);
+  overflow:hidden;
+  padding-bottom:20px;
+}
+.site-header{
+  background: linear-gradient(90deg, var(--header-a), var(--header-b));
+  color:#fff;
+  padding:25px 30px;
+  text-align:center;
+  position:relative;
+}
+h1{ font-size:2rem; margin:6px 0 8px; }
+.subtitle{ font-size:1rem; opacity:.9; }
+.main-content{ padding:26px; }
+
+/* 组织标识与翻译按钮 */
+.org-badge{
+  position:absolute;
+  top:10px; left:10px;
+  padding:6px 10px;
+  border:2px solid #3b82f6;
+  border-radius:8px;
+  background:rgba(255,255,255,0.85);
+  color:#1e40af;
+  font-weight:600; font-size:.95rem; line-height:1; white-space:nowrap;
+  backdrop-filter: blur(2px);
+}
+.lang-toggle{
+  position:absolute;
+  top:10px; right:10px;
+  background:#fff; color:#182848;
+  border:none; padding:6px 12px; border-radius:8px;
+  cursor:pointer; font-weight:600;
+}
+
+/* 目录按钮网格 */
+.btn-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap:16px;
+}
+.grid-btn{
+  display:flex; align-items:center; gap:12px;
+  background:linear-gradient(90deg, #f8f9ff, #eef7ff);
+  border:2px solid #dbeafe;
+  padding:16px 18px;
+  border-radius:14px;
+  text-decoration:none;
+  color:#0f172a;
+  transition:transform .15s ease, box-shadow .2s ease;
+  box-shadow:0 6px 14px rgba(30,64,175,0.10);
+}
+.grid-btn i.fa-solid{ font-size:1.2rem; }
+.grid-btn .open-icon{ margin-left:auto; opacity:.7; }
+.grid-btn:hover{
+  transform: translateY(-2px);
+  box-shadow:0 10px 22px rgba(30,64,175,0.18);
+}
+
+/* 说明文字 */
+.tip{
+  margin-top:18px;
+  font-size:.95rem;
+  color:#334155;
+  background:#f1f5ff;
+  border:1px dashed #93c5fd;
+  border-radius:10px;
+  padding:12px 14px;
+}

@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZTE小工具</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="org-badge">马来西亚工程服务处数字化团队</div>
+      <button id="langToggle" class="lang-toggle">EN</button>
+      <h1><i class="fa-solid fa-toolbox"></i> <span data-i18n="title">ZTE小工具</span></h1>
+      <p class="subtitle" data-i18n="subtitle">常用内部小工具目录</p>
+    </header>
+
+    <main class="main-content">
+      <div class="btn-grid" id="linkGrid">
+        {% for item in links %}
+        <a class="grid-btn" href="{{ item.href }}" target="_blank">
+          <i class="{{ item.icon }}"></i>
+          <span class="btn-text" data-i18n-key-zh="{{ item.text_zh }}" data-i18n-key-en="{{ item.text_en }}">{{ item.text_zh }}</span>
+          <i class="fa-solid fa-arrow-up-right-from-square open-icon"></i>
+        </a>
+        {% endfor %}
+      </div>
+
+      <div class="tip" data-i18n="tip">
+        如有问题请iCenter联系 6800000262 杜昂睿
+      </div>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
